@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "helloangularnet.client", "helloangularnet.client\helloangularnet.client.esproj", "{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloANgularNet.Server", "HelloANgularNet.Server\HelloANgularNet.Server.csproj", "{51F92C8C-F11C-45BB-9F53-D5800AD66A61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62CDB0B1-849A-6EED-FAD4-CBA6997A3756}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{51F92C8C-F11C-45BB-9F53-D5800AD66A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F92C8C-F11C-45BB-9F53-D5800AD66A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F92C8C-F11C-45BB-9F53-D5800AD66A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F92C8C-F11C-45BB-9F53-D5800AD66A61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45AAF0AD-44AD-468C-AD65-28735AEE27D7}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  angularnet:
+    build: .
+    container_name: angularnet
+    ports:
+      - "5000:8080"   # localhost:5000 -> contenedor:8080
+    restart: unless-stopped

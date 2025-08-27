@@ -1,0 +1,26 @@
+﻿<div class="container mt-4">
+  <h1 class="mb-4 text-center">Mi Tiendita 🛒</h1>
+
+  <div class="row row-cols-1 row-cols-md-5 g-4">
+    <div class="col" *ngFor="let producto of productos">
+      <div class="card h-100 text-center shadow-sm cursor-pointer" (click)="agregarAlCarrito(producto)">
+        <div class="card-body">
+          <p class="display-4">{{ producto.emoji }}</p>
+          <h5 class="card-title">{{ producto.nombre }}</h5>
+          <p class="card-text">${{ producto.precio.toFixed(2) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 p-3 border rounded shadow-sm">
+    <h4>Carrito 🛒</h4>
+    <ul class="list-group mb-2">
+      <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of carrito">
+        {{ item.nombre }}
+        <span>${{ item.precio.toFixed(2) }}</span>
+      </li>
+    </ul>
+    <h5>Total: ${{ total.toFixed(2) }}</h5>
+  </div>
+</div>
