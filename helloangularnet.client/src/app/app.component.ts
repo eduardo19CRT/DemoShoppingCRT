@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Contexto } from './api/contexto.service';
 
 interface Producto {
   nombre: string;
@@ -15,26 +16,19 @@ interface Producto {
 })
 export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-  }
-
-  productos: Producto[] = [
-    { nombre: 'Manzana', precio: 10, emoji: '🍎' },
-    { nombre: 'Banana', precio: 8, emoji: '🍌' },
-    { nombre: 'Uvas', precio: 12, emoji: '🍇' },
-    { nombre: 'Pan', precio: 15, emoji: '🍞' },
-    { nombre: 'Leche', precio: 20, emoji: '🥛' },
-    { nombre: 'Queso', precio: 25, emoji: '🧀' },
-    { nombre: 'Helado', precio: 30, emoji: '🍨' },
-    { nombre: 'Pizza', precio: 50, emoji: '🍕' },
-    { nombre: 'Hamburguesa', precio: 45, emoji: '🍔' },
-    { nombre: 'Taco', precio: 18, emoji: '🌮' },
-  ];
+  productos: Producto[] = [];
 
   carrito: Producto[] = [];
   total: number = 0;
+
+  constructor(private http: HttpClient, private context: Contexto) {}
+
+  ngOnInit() {
+    this.context.producto.obtenerTodos().subscribe( (res) => {
+      this.productos = res.objeto
+    })
+
+  }
 
   agregarAlCarrito(producto: Producto) {
     this.carrito.push(producto);
