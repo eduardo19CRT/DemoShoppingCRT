@@ -1,5 +1,7 @@
-﻿using Master.Utilerias;
+﻿using HelloANgularNet.Server.Models;
+using Master.Utilerias;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sorteo.Server.DTOs;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -11,46 +13,32 @@ namespace B2B.Server.Controllers
     public class ProductoController : ControllerBase
     {
 
-
+        private readonly B2bContext _ctx;
         public ProductoController(
+            B2bContext ctx
         )
         {
+            _ctx = ctx;
         }
 
         [HttpGet("Obtener")]
         public async Task<ActionResult<Respuesta<List<ProductoDTO>>>> ObtenerActivos()
         {
-            var productos = new List<ProductoDTO>
+
+            var productos = await _ctx.Productos.ToListAsync();
+
+            var productosDto = productos.Select(c => new ProductoDTO
             {
-                new ProductoDTO
-                { Nombre = "Manzana", Precio = 10, Emoji = "🍎" },
-                new ProductoDTO
-                { Nombre = "Banana", Precio = 8, Emoji = "🍌" },
-                new ProductoDTO
-                { Nombre = "Uvas", Precio = 12, Emoji = "🍇" },
-                new ProductoDTO
-                { Nombre = "Pan", Precio = 15, Emoji = "🍞" },
-                new ProductoDTO
-                { Nombre = "Leche", Precio = 20, Emoji = "🥛" },
-                new ProductoDTO
-                { Nombre = "Queso", Precio = 25, Emoji = "🧀" },
-                new ProductoDTO
-                { Nombre = "Helado", Precio = 30, Emoji = "🍨" },
-                new ProductoDTO
-                { Nombre = "Pizza", Precio = 50, Emoji = "🍕" },
-                new ProductoDTO
-                { Nombre = "Hamburguesa", Precio = 45, Emoji = "🍔" }, 
-                new ProductoDTO
-                { Nombre = "Taco", Precio = 18, Emoji = "🌮" },
-
-            };
-
+                Nombre = c.Nombre,
+                Precio = c.Precio,
+                Emoji = c.Emoji
+            }).ToList();
 
             return Ok(new Respuesta<List<ProductoDTO>>
             {
                 Ok = true,
                 Mensaje = "Lista de productos obtenida correctamente",
-                Objeto = productos
+                Objeto = productosDto
             });
         }
     }

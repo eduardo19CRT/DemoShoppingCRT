@@ -1,7 +1,4 @@
-﻿using B2B.Server.Models.Entidades;
-
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace HelloANgularNet.Server.Models
 {

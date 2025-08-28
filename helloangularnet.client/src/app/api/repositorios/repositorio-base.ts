@@ -13,7 +13,9 @@ export abstract class RepositorioBase {
     }
 
     constructor(private httpClient: HttpClient, controlador: string) {
-        /*this._ruta = 'http://88.135.73.47:8002/' + controlador;*/
-        this._ruta = 'https://localhost:44385/' + controlador;
+      //Desarrollo
+      //this._ruta = 'https://localhost:44385/' + controlador;
+      //Imagen Docker
+      this._ruta = 'https://angularnet:44385/' + controlador;
     }
 }

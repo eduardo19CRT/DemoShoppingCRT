@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<B2bContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Context")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Context")));
 
 var app = builder.Build();
 
