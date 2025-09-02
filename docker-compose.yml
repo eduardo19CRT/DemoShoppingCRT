@@ -19,7 +19,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=createga
+      - POSTGRES_USER=prueba_db
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=prueba_db
     volumes:

@@ -1,5 +1,67 @@
-﻿<div class="container mt-4">
-  <h1 class="mb-4 text-center">Mi Tiendita 🛒</h1>
+﻿
+<div *ngIf="!bridgeInstalled" class="alert alert-warning text-center">
+        <div class="mb-3">
+          <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+        </div>
+        <h4>⚠️ Software Requerido</h4>
+        <p class="mb-3">Para usar el lector NFC, debe instalar el software local:</p>
+        <!-- <a href="/assets/nfc-bridge-setup.exe" download class="btn btn-primary btn-lg">
+          <i class="bi bi-download"></i> Descargar Instalador
+        </a> -->
+        <p class="mt-3 mb-0 text-muted">
+          <small>Después de instalar, recargue la página</small>
+        </p>
+      </div>
+
+<div class="container mt-4" *ngIf="bridgeInstalled">
+
+  <!-- Modal de Información -->
+  <div class="modal fade" [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">ℹ️ Información de la Tarjeta</h5>
+          <button type="button" class="btn-close" (click)="cerrarModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h6>Id de tarjeta</h6>
+          <p>{{ cardUid }}</p>
+
+          <h6>Saldo</h6>
+          <p>${{ saldo }}</p>
+
+
+          <h6>Recargar saldo:</h6>
+          <button class="btn btn-primary" (click)="recargarSaldo(true)" [hidden]="recargar">Recargar</button>
+
+          <div class="d-flex">
+            <input type="number" class="form-control" [(ngModel)]="saldoRecarga" min="0" [hidden]="!recargar"/>
+            <button class="btn btn-primary ms-2" (click)="recargarSaldo(false)" [hidden]="!recargar">Aplicar</button>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fondo oscuro del modal -->
+  <div class="modal-backdrop fade show" *ngIf="mostrarModal"></div>
+
+  <!-- Contenido principal -->
+  <div class="mb-4 d-flex justify-content-between align-items-center">
+    <h1>Mi Tiendita 🛒</h1>
+    <div>
+      <button class="btn btn-primary" (click)="readCard()">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              <i *ngIf="!isLoading" class="bi bi-nfc"></i>
+              {{ isLoading ? 'Leyendo...' : 'ℹ️' }}
+      </button>
+    </div>
+  </div>
 
   <div class="row row-cols-1 row-cols-md-5 g-4">
     <div class="col" *ngFor="let producto of productos">
@@ -14,13 +76,40 @@
   </div>
 
   <div class="mt-4 p-3 border rounded shadow-sm">
-    <h4>Carrito 🛒</h4>
-    <ul class="list-group mb-2">
+    <h4>Carrito 🛒 ({{ carrito.length }} items)</h4>
+
+    <div *ngIf="carrito.length === 0" class="text-center text-muted py-3">
+      <p>El carrito está vacío</p>
+    </div>
+
+    <ul class="list-group mb-2" *ngIf="carrito.length > 0">
       <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of carrito">
-        {{ item.nombre }}
-        <span>${{ item.precio.toFixed(2) }}</span>
+        <div class="d-flex align-items-center">
+          <span class="me-2">{{ item.producto.emoji }}</span>
+          <span>{{ item.producto.nombre }}</span>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <span class="me-3">${{ item.subtotal.toFixed(2) }}</span>
+
+          <div class="btn-group me-3" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-outline-secondary" (click)="disminuirCantidad(item)">-</button>
+            <button type="button" class="btn btn-outline-secondary" disabled>{{ item.cantidad }}</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="aumentarCantidad(item)">+</button>
+          </div>
+
+          <button class="btn btn-sm btn-danger" (click)="eliminarDelCarrito(item)">
+            Eliminar
+          </button>
+        </div>
       </li>
     </ul>
-    <h5>Total: ${{ total.toFixed(2) }}</h5>
+
+    <div class="list-group mb-2" *ngIf="carrito.length > 0">
+      <div class="list-group-item d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Total: ${{ total.toFixed(2) }}</h5>
+        <button class="btn btn-primary" (click)="pagar()">Pagar</button>
+      </div>
+    </div>
   </div>
 </div>
