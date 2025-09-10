@@ -30,6 +30,10 @@ export class NfcService {
     return this.http.post(`${this.apiUrl}/pay`, { amount });
   }
 
+  sincronizarCard(amount: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/sincronizar`, { amount });
+  }
+
   checkLocalBridge(): Observable<any> {
     return this.http.get(`${this.apiUrl}/health`, { responseType: 'text' });
   }
