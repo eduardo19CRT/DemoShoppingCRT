@@ -1,57 +1,32 @@
 version: '3.9'
 
 services:
-  angularnet:
-    build: .
-    container_name: angularnet
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
     ports:
-      - "5000:8080"   # localhost:5000 -> contenedor:8080
-    restart: unless-stopped
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # aquí defines la cadena de conexión a la base de datos en la nube
+      - ConnectionStrings__Context=Host=35.184.155.33;Port=5432;Database=postgres;Username=postgres;Password=Createga@123
     networks:
       - app-network
-    depends_on:
-      - myDB
 
-  myDB:
-    image: postgres:15
-    container_name: my-database
-    restart: always
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
     ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=createga
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=prueba_db
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - "4200:80"
     networks:
       - app-network
-  
-  pdAdmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4
-    restart: always
     depends_on:
-      - myDB
-    ports:
-      - 8080:80
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=createga@prueba.com
-      - PGADMIN_DEFAULT_PASSWORD=123456
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-      - ./pgadmin:/certs/server.cert
-      - ./pgadmin:/certs/server.key
-      - ./pgadmin:/pgadmin4/servers.json
-    networks:
-      - app-network
+      - backend
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres_data:
-    driver: local
-  pgadmin_data:
-    driver: local

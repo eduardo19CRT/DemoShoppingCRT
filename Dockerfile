@@ -1,38 +1,63 @@
-# Etapa 1: Build Angular con Node 20
-FROM node:20 AS angular-build
-WORKDIR /app
+version: '3.9'
 
-# Copiar package.json y package-lock.json para instalar dependencias
-COPY helloangularnet.client/package*.json ./helloangularnet.client/
-WORKDIR /app/helloangularnet.client
-RUN npm install -g @angular/cli@19.2.13
-RUN npm install --legacy-peer-deps
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - myDB
+    networks:
+      - app-network
 
-# Copiar todo el frontend y compilar Angular
-COPY helloangularnet.client/. .
-RUN ng build --configuration production
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "4200:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
 
-# Etapa 2: Build .NET
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dotnet-build
-WORKDIR /src
+  myDB:
+    image: postgres:15
+    container_name: my-database
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=createga
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=prueba_db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      - app-network
 
-# Copiar solución y proyecto backend
-COPY HelloANgularNet.sln ./
-COPY HelloANgularNet.Server ./HelloANgularNet.Server
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    depends_on:
+      - myDB
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=createga@prueba.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    networks:
+      - app-network
 
-# Restaurar paquetes y publicar
-WORKDIR /src/HelloANgularNet.Server
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
-
-# Copiar build de Angular a wwwroot de .NET
-RUN rm -rf /app/publish/wwwroot/*
-COPY --from=angular-build /app/helloangularnet.client/dist/helloangularnet.client/browser/ /app/publish/wwwroot/
-
-
-# Etapa 3: Runtime .NET
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-WORKDIR /app
-COPY --from=dotnet-build /app/publish .
-EXPOSE 8080
-ENTRYPOINT ["dotnet", "HelloANgularNet.Server.dll"]
+networks:
+  app-network:
+    driver: bridge

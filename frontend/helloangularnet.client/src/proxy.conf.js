@@ -16,4 +16,4 @@ const { env } = require('process');
 //   }
 // ]
 
-module.exports = PROXY_CONFIG;
+module.exports = [];
