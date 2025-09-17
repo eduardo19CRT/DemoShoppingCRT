@@ -10,6 +10,7 @@ namespace HelloANgularNet.Server.Models
         }
 
         public DbSet<Producto> Productos { get; set; }
+        public DbSet<Tarjeta> Tarjetas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,7 +2,12 @@
 
 export interface Producto {
   nombre: string;
-  precio: string;
+  precio: number;
   emoji: string;
 }
 
+export interface ItemCarrito {
+  producto: Producto;
+  cantidad: number;
+  subtotal: number;
+}

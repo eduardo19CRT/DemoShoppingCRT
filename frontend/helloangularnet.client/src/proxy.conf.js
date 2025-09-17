@@ -6,14 +6,8 @@ const { env } = require('process');
 //Imagen Docker
 // const target = 'https://angularnet:44385';
 
-// const PROXY_CONFIG = [
-//   {
-//     context: [
-//       "/weatherforecast",
-//     ],
-//     target,
-//     secure: false
-//   }
-// ]
+const PROXY_CONFIG = [
+
+]
 
 module.exports = [];
